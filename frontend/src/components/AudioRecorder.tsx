@@ -48,12 +48,14 @@ export default function AudioRecorder({ onSendAudio, disabled = false }: Props) 
         <button
           onClick={handleSendAudio}
           disabled={disabled}
+          type="button"
           className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 disabled:opacity-50"
         >
           Enviar
         </button>
         <button
           onClick={handleCancelAudio}
+          type="button"
           className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700"
         >
           Cancelar
@@ -64,6 +66,7 @@ export default function AudioRecorder({ onSendAudio, disabled = false }: Props) 
 
   return (
     <button
+      type="button"
       onClick={isRecording ? handleStopRecording : handleStartRecording}
       disabled={disabled}
       className={`px-3 py-2 rounded transition-colors ${
