@@ -20,10 +20,10 @@ export default function Sidebar({ selectedChatId, onSelectChat }: Props) {
   };
 
   return (
-    <div className="w-64 bg-gray-900 text-white p-4 space-y-4 overflow-y-auto">
+    <div className="w-64 bg-[#181818] text-white p-4 space-y-4 overflow-y-auto">
       <button
         onClick={handleNewChat}
-        className="w-full bg-green-600 hover:bg-green-700 rounded p-2"
+        className="w-full hover:bg-[#303030] rounded p-2"
       >
         + Nuevo Chat
       </button>
@@ -32,8 +32,8 @@ export default function Sidebar({ selectedChatId, onSelectChat }: Props) {
         <div
           key={chat.id}
           className={cn(
-            "p-2 rounded cursor-pointer hover:bg-gray-700",
-            selectedChatId === chat.id && "bg-gray-700"
+            "p-2 rounded cursor-pointer hover:bg-[#303030]",
+            selectedChatId === chat.id && "bg-[#303030] text-white"
           )}
           onClick={() => onSelectChat(chat.id)}
         >
