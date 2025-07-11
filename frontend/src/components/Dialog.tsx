@@ -10,7 +10,6 @@ interface Props {
 export default function Dialog({ isOpen, onClose, title, children }: Props) {
   useEffect(() => {
     if (isOpen) {
-      // Prevenir scroll del body cuando el modal está abierto
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
@@ -38,7 +37,7 @@ export default function Dialog({ isOpen, onClose, title, children }: Props) {
         className="bg-[#2a2a2a] rounded-lg shadow-xl border border-[#404040] overflow-hidden max-w-md w-full mx-4 transform scale-100 transition-transform duration-200"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
+
         <div className="flex items-center justify-between p-4 border-b border-[#404040]">
           <h2 className="text-lg font-semibold text-white">{title}</h2>
           <button
@@ -49,7 +48,6 @@ export default function Dialog({ isOpen, onClose, title, children }: Props) {
           </button>
         </div>
         
-        {/* Content */}
         <div className="p-4">
           {children}
         </div>

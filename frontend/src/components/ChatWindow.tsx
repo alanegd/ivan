@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from "react";
-import { getMessages, sendMessage } from "../services/api";
+import { getMessages, sendMessage, sendAudioMessage } from "../services/api";
 import type { Message } from "../types";
+import AudioPlayer from "./AudioPlayer";
+import AudioRecorder from "./AudioRecorder";
 
 interface Props {
 	chatId: number | null;
@@ -37,6 +39,35 @@ export default function ChatWindow({ chatId }: Props) {
 			setMessages((prev) => [...prev, respuesta]);
 		} catch (error) {
 			console.error("Error al enviar mensaje:", error);
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	const handleSendAudio = async (audioFile: File) => {
+		if (!chatId) return;
+		try {
+			setLoading(true);
+
+			const mensajeUsuario: Message = {
+				id: -1,
+				message: "🎵 Transcribiendo audio...",
+				role: "user",
+				datetime: new Date().toISOString(),
+			};
+			setMessages((prev) => [...prev, mensajeUsuario]);
+
+			await sendAudioMessage(chatId, audioFile);
+
+			const mensajesActualizados = await getMessages(chatId);
+		
+			setMessages(mensajesActualizados);
+			
+		} catch (error) {
+			console.error("Error al enviar audio:", error);
+
+			setMessages((prev) => prev.filter(msg => msg.message !== "🎵 Transcribiendo audio..."));
+			alert("Error al procesar el audio. Inténtalo de nuevo.");
 		} finally {
 			setLoading(false);
 		}
@@ -80,7 +111,10 @@ export default function ChatWindow({ chatId }: Props) {
 									msg.role === "user" ? "bg-[#323232] text-white": "text-white" 
 								}`}
 							>
-								{msg.message}
+								<div className="mb-1">{msg.message}</div>
+								{msg.role === "bot" && msg.id !== -1 && (
+									<AudioPlayer messageId={msg.id} className="mt-2" />
+								)}
 							</div>
 						</div>
 					))
@@ -108,6 +142,7 @@ export default function ChatWindow({ chatId }: Props) {
 					className="flex-1 border rounded p-2 bg-[#303030] text-[#afafaf]"
 					disabled={loading}
 				/>
+				<AudioRecorder onSendAudio={handleSendAudio} disabled={loading} />
 				<button
 					type="submit"
 					className="bg-[#414141] text-white px-4 py-2 rounded hover:bg-white disabled:bg-[#303030]"

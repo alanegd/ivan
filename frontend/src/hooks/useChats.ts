@@ -7,7 +7,6 @@ export const useChats = () => {
 
   const loadChats = async () => {
     const data = await getChats();
-    // Ordenar chats del más reciente al más antiguo (por ID descendente)
     const sortedChats = data.sort((a, b) => b.id - a.id);
     setChats(sortedChats);
   };
@@ -16,7 +15,6 @@ export const useChats = () => {
     loadChats();
   }, []);
 
-  // Función para obtener el chat más reciente
   const getMostRecentChat = () => {
     return chats.length > 0 ? chats[0] : null;
   };
