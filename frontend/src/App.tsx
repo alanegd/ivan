@@ -1,35 +1,15 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import Sidebar from "./components/Sidebar";
+import ChatWindow from "./components/ChatWindow";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [selectedChatId, setSelectedChatId] = useState<number | null>(null);
 
   return (
-    <>
-      <div >
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} alt="React logo" />
-        </a>
-      </div>
-      <h1 className="text-3xl" >Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p className="text-lg">
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div className="flex h-screen">
+      <Sidebar selectedChatId={selectedChatId} onSelectChat={setSelectedChatId} />
 
-export default App
+      <ChatWindow chatId={selectedChatId} />
+    </div>
+  );
+}
