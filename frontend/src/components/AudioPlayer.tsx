@@ -49,22 +49,22 @@ export default function AudioPlayer({ messageId, className = "" }: Props) {
     <button
       onClick={playAudio}
       disabled={isLoading || isPlaying}
-      className={`inline-flex items-center gap-1 px-2 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${className}`}
+      className={`inline-flex items-center gap-1 px-2 py-1 text-xs  bg-[#303030] text-white rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${className}`}
       title={error || (isPlaying ? "Reproduciendo..." : "Reproducir audio")}
     >
       {isLoading ? (
         <>
-          <div className="w-3 h-3 border border-white border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-3 h-3 border border-white border-t-transparent rounded-full animate-spin text-[#afafaf]"></div>
           <span>Cargando...</span>
         </>
       ) : isPlaying ? (
         <>
-          <img src="/icons/speaker.svg" alt="Playing" className="w-3 h-3" />
+          <img src="/icons/speaker.svg" alt="Playing" className="w-3 h-3 text-[#afafaf]" />
           <span>Reproduciendo...</span>
         </>
       ) : (
         <>
-          <img src="/icons/speaker.svg" alt="Play" className="w-3 h-3" />
+          <img src="/icons/speaker.svg" alt="Play" className="w-3 h-3 text-[#afafaf]" />
           <span>Escuchar</span>
         </>
       )}
