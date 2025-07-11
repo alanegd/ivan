@@ -57,20 +57,34 @@ export default function ChatWindow({ chatId }: Props) {
 	return (
 		<div className="flex flex-col flex-1 bg-[#212121] px-24">
 			<div className="flex-1 p-4 overflow-y-auto space-y-2">
-				{messages.map((msg, index) => (
-					<div
-						key={msg.id !== -1 ? msg.id : `temp-${index}`}
-						className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-					>
-						<div
-							className={`p-2 rounded max-w-lg ${
-								msg.role === "user" ? "bg-[#323232] text-white": "text-white" 
-							}`}
-						>
-							{msg.message}
+				{messages.length === 0 && !loading ? (
+					<div className="flex-1 flex items-center justify-center">
+						<div className="text-center">
+							<div className="text-6xl mb-4">🤔</div>
+							<h2 className="text-xl font-semibold text-white mb-2">
+								¡Hola! Soy Iván
+							</h2>
+							<p className="text-[#afafaf] text-lg">
+								Hazme una pregunta, ¿o eres mono? 🐒
+							</p>
 						</div>
 					</div>
-				))}
+				) : (
+					messages.map((msg, index) => (
+						<div
+							key={msg.id !== -1 ? msg.id : `temp-${index}`}
+							className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+						>
+							<div
+								className={`p-2 rounded max-w-lg ${
+									msg.role === "user" ? "bg-[#323232] text-white": "text-white" 
+								}`}
+							>
+								{msg.message}
+							</div>
+						</div>
+					))
+				)}
 
 				{loading && (
 					<div className="bg-[#323232] text-[#afafaf] p-2 rounded w-fit animate-pulse">

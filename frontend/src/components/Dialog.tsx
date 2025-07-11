@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 interface Props {
   isOpen: boolean;
@@ -8,38 +8,42 @@ interface Props {
 }
 
 export default function Dialog({ isOpen, onClose, title, children }: Props) {
-  const dialogRef = useRef<HTMLDialogElement>(null);
-
   useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-
     if (isOpen) {
-      dialog.showModal();
+      // Prevenir scroll del body cuando el modal está abierto
+      document.body.style.overflow = 'hidden';
     } else {
-      dialog.close();
+      document.body.style.overflow = 'unset';
     }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
   }, [isOpen]);
 
   const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === dialogRef.current) {
+    if (e.target === e.currentTarget) {
       onClose();
     }
   };
 
+  if (!isOpen) return null;
+
   return (
-    <dialog
-      ref={dialogRef}
-      className="backdrop:bg-black/50 bg-transparent p-0 rounded-lg max-w-md w-full m-auto"
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
       onClick={handleBackdropClick}
     >
-      <div className="bg-[#2a2a2a] rounded-lg shadow-xl border border-[#404040] overflow-hidden">
+      <div 
+        className="bg-[#2a2a2a] rounded-lg shadow-xl border border-[#404040] overflow-hidden max-w-md w-full mx-4 transform scale-100 transition-transform duration-200"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-[#404040]">
           <h2 className="text-lg font-semibold text-white">{title}</h2>
           <button
             onClick={onClose}
-            className="text-[#afafaf] hover:text-white transition-colors w-6 h-6 flex items-center justify-center"
+            className="text-[#afafaf] hover:text-white transition-colors w-6 h-6 flex items-center justify-center hover:bg-[#404040] rounded"
           >
             ✕
           </button>
@@ -50,6 +54,6 @@ export default function Dialog({ isOpen, onClose, title, children }: Props) {
           {children}
         </div>
       </div>
-    </dialog>
+    </div>
   );
 }

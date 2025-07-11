@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { useChats } from "../hooks/useChats";
 import { createChat } from "../services/api";
 import { cn } from "../utils/classnames";
+import NewChatDialog from "./NewChatDialog";
 
 interface Props {
   selectedChatId: number | null;
@@ -9,20 +11,18 @@ interface Props {
 
 export default function Sidebar({ selectedChatId, onSelectChat }: Props) {
   const { chats, reloadChats } = useChats();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const handleNewChat = async () => {
-    const nombre = prompt("Nombre del nuevo chat");
-    if (nombre) {
-      const newChat = await createChat(nombre);
-      reloadChats();
-      onSelectChat(newChat.id);
-    }
+  const handleNewChat = async (nombre: string) => {
+    const newChat = await createChat(nombre);
+    reloadChats();
+    onSelectChat(newChat.id);
   };
 
   return (
     <div className="w-64 bg-[#181818] text-white p-4 space-y-4 overflow-y-auto">
       <button
-        onClick={handleNewChat}
+        onClick={() => setIsDialogOpen(true)}
         className="w-full hover:bg-[#303030] rounded p-2"
       >
         + Nuevo Chat
@@ -40,6 +40,12 @@ export default function Sidebar({ selectedChatId, onSelectChat }: Props) {
           {chat.nombre}
         </div>
       ))}
+
+      <NewChatDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        onCreateChat={handleNewChat}
+      />
     </div>
   );
 }
