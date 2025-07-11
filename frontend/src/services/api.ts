@@ -1,7 +1,7 @@
 import axios from "axios";
 import type { Chat, Message } from "../types";
 
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = "http://gustavotenant-ivanbackend-dmzppc-9dd011-167-172-134-69.traefik.me";
 
 export const getChats = async (): Promise<Chat[]> => {
   const res = await axios.get(`${BASE_URL}/chats/`);
