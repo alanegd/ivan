@@ -1,21 +1,27 @@
 import { useState } from "react";
-import { useChats } from "../hooks/useChats";
 import { createChat } from "../services/api";
 import { cn } from "../utils/classnames";
 import NewChatDialog from "./NewChatDialog";
+import type { Chat } from "../types";
+
+interface Props {
+  selectedChatId: number | null;
+  onSelectChat: (id: number) => void;
+  chats: Chat[];
+  onReloadChats: () => void;
+}
 
 interface Props {
   selectedChatId: number | null;
   onSelectChat: (id: number) => void;
 }
 
-export default function Sidebar({ selectedChatId, onSelectChat }: Props) {
-  const { chats, reloadChats } = useChats();
+export default function Sidebar({ selectedChatId, onSelectChat, chats, onReloadChats }: Props) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleNewChat = async (nombre: string) => {
     const newChat = await createChat(nombre);
-    reloadChats();
+    onReloadChats();
     onSelectChat(newChat.id);
   };
 
